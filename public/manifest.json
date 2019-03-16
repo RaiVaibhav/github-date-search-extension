@@ -1,0 +1,26 @@
+{
+  "short_name": "React Extension",
+  "name": "GitHub Date Search Extension",
+  "version": "1.0",
+  "manifest_version": 2,
+  "background": {
+    "scripts": ["app/background.js"]
+  },
+  
+  "content_scripts" : [
+    {
+      "matches": ["https://github.com/*"],
+      "css": ["/static/css/app.css"],
+      "js": ["/static/js/content.js"]
+    }
+  ],
+  "web_accessible_resources":[
+    "/static/css/content.css",
+    "/static/media/fontawesome-webfont.674f50d2.eot",
+    "/static/media/fontawesome-webfont.912ec66d.svg",
+    "/static/media/fontawesome-webfont.b06871f2.ttf",
+    "/static/media/fontawesome-webfont.af7ae505.woff2",
+    "/static/media/fontawesome-webfont.fee66e71.woff"
+  ],
+  "content_security_policy": "script-src 'self' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'"
+}
