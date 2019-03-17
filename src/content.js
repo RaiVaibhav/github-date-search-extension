@@ -6,6 +6,7 @@ import moment from 'moment';
 import Frame, { FrameContextConsumer }from 'react-frame-component';
 import "./content.css";
 import 'font-awesome/css/font-awesome.min.css';
+import { Button, Popup } from 'semantic-ui-react'
 
 class Calendar extends React.Component {
   state = {
@@ -283,30 +284,59 @@ const style = {
   position: "relative",
   margin: "50% auto"
 }
-const Main =() =>{
-    let onDayClick = (e, day) => {
-      console.log("selected day:", day)
-    }
-    return createPortal(
-        <div id="my-extension-root" style={{background: "linear-gradient(grey 40%,white 50%)"}}><Frame head={[<link type="text/css" rel="stylesheet" href={chrome.runtime.getURL("/static/css/content.css")} ></link>
-        ]}> 
-            <FrameContextConsumer>
-            {
-                ({document, window}) => {
-                    return (
+class Main extends React.Component {
+    render() {
+        return (
+            <Frame head={[<link type="text/css" rel="stylesheet" href={chrome.runtime.getURL("/static/css/content.css")} ></link>]}> 
+               <FrameContextConsumer>
+               {
+               // Callback is invoked with iframe's window and document instances
+                   ({document, window}) => {
+                      // Render Children
+                        return (
                         <div className={'my-extension'}>
-                            <Calendar style={style} width="302px" 
-                                onDayClick={(e, day)=> onDayClick(e, day)}/> 
+                            <Calendar style={style} width="302px"/> 
                         </div>
-
-                    )
+                        )
+                    }
                 }
-            }
-            </FrameContextConsumer>
-        </Frame></div>,
-        document.getElementById("extension_one")
-    )
+                </FrameContextConsumer>
+            </Frame>
+        )
+    }
 }
+
+
+
+// const style = {
+//   position: "relative",
+//   margin: "50% auto"
+// }
+// const Main =() =>{
+//     let onDayClick = (e, day) => {
+//       console.log("selected day:", day)
+//     }
+//     return createPortal(
+//         <div id="my-extension-root" style={{background: "linear-gradient(grey 40%,white 50%)"}}><Frame head={[<link type="text/css" rel="stylesheet" href={chrome.runtime.getURL("/static/css/content.css")} ></link>
+//         ]}> 
+//             <FrameContextConsumer>
+//             {
+//                 ({document, window}) => {
+//                     return (
+//                         <div className={'my-extension'}>
+//                             <Calendar style={style} width="302px" 
+//                                 onDayClick={(e, day)=> onDayClick(e, day)}/> 
+//                         </div>
+
+//                     )
+//                 }
+//             }
+//             </FrameContextConsumer>
+//         </Frame></div>,
+//         document.getElementById("extension_one")
+//     )
+// }
+
 
 class MyButton extends React.Component {
     constructor(props){
@@ -317,30 +347,38 @@ class MyButton extends React.Component {
     }
     render(){
         return (
-            <div className="search-checkbox">
-                <input type="checkbox" style={{margin:"5px"}}onChange={(event)=>{
-                    if (event.target.checked){
-                        this.setState({
-                            showMain: true
-                        })
-                    }else{
-                        let inputVal = (document.forms[0].childNodes[2].childNodes[1].value).split("created:>")[0]
-                        document.forms[0].childNodes[2].childNodes[1].value =inputVal
-                        this.setState({
-                            showMain: false
-                        })
-                    }
-                }}/>Date
-                {this.state.showMain?<Main/>:null}
-            </div>
+            // <div className="search-checkbox">
+            //     <input type="checkbox" style={{margin:"5px"}}onChange={(event)=>{
+            //         if (event.target.checked){
+            //             this.setState({
+            //                 showMain: true
+            //             })
+            //         }else{
+            //             let inputVal = (document.forms[0].childNodes[2].childNodes[1].value).split("created:>")[0]
+            //             document.forms[0].childNodes[2].childNodes[1].value =inputVal
+            //             this.setState({
+            //                 showMain: false
+            //             })
+            //         }
+            //     }}/>Date
+            //     {this.state.showMain?<Main/>:null}
+            // </div>
+            <Popup
+            trigger={<input type="checkbox" style={{margin:"5px"}}/>}
+            content={<Calendar style={style} width="302px"/>}
+            position='top right'
+            on='change'
+          />
         )
     }
 
 }
-const app = document.createElement('div');
-app.id = "extension_one";
+// const app = document.createElement('div');
+// app.id = "extension_one";
 
-document.body.appendChild(app);
+// document.body.appendChild(app);
+
+//   export default PopupExampleClick
 const one = document.createElement('div');
 one.id = "something"
 document.forms[0].childNodes[2].appendChild(one)
